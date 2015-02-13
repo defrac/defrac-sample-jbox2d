@@ -1,4 +1,4 @@
-JBo2D Benchmark
+JBox2D Benchmark
 ===============
 This sample is a port of the [jbox2d-benchmark](http://teavm.org/live-examples/jbox2d-benchmark/).
 
