@@ -1,0 +1,62 @@
+<!--
+    Copyright 2014 Alexey Andreev.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+         http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>defrac JBox2D Benchmark</title>
+    <script src="jbox2d/app.js" async onload="main()"></script>
+    <style>
+    body { width: 600px; background: #333; color: gray; font: 16px Helvetica, sans-serif; margin: 0 auto; }
+    a, a:link, a:visited, a:hover { color: #fff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    p { text-align: justify; }
+    </style>
+  </head>
+  <body>
+    <h1>defrac performance</h1>
+    <p>This is a defrac port of the <a href="http://teavm.org/live-examples/jbox2d-benchmark/">jbox2d-benchmark</a> and uses the same
+    benchmarking methodology. It accumulates the time spent in the physics engine during a seond. This means a value of 200ms
+    says that "out of 1000ms in total, 200ms were allocated to the physics engine".</p>
+    <div>
+      <canvas id="benchmark-canvas" width="600" height="600"></canvas>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Best[ms]</th>
+          <th>Mean[ms]</th>
+          <th>Error[±%]</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="result-best">Wait for</td>
+          <td id="result-mean">... at least ...</td>
+          <td id="result-error">10 seconds</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <table>
+      <thead>
+        <tr>
+          <th>Second</th>
+          <th>Time[ms]</th>
+        </tr>
+      </thead>
+      <tbody id="result-table-body">
+      </tbody>
+    </table>
+  </body>
+</html>

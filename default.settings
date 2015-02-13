@@ -1,0 +1,20 @@
+{
+  "name": "JBox2D Benchmark",
+  "package": "com.defrac.sample.jbox2d",
+  "identifier": "benchmark",
+  "main": "org.teavm.samples.benchmark.defrac.BenchmarkStarter",
+  "version": "1.0",
+  "targets": [
+    "web",
+    "jvm"
+  ],
+  "debug": false,
+  "strictMode": false,
+  "web": {
+    "main": "org.teavm.samples.benchmark.defrac.WebBenchmarkStarter",
+    "optimizer": {
+      "enabled": "true"
+    },
+    "port": 30679
+  }
+}
