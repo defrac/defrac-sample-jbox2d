@@ -1,20 +1,22 @@
 {
   "name": "JBox2D Benchmark",
   "package": "com.defrac.sample.jbox2d",
-  "identifier": "benchmark",
-  "main": "org.teavm.samples.benchmark.defrac.BenchmarkStarter",
   "version": "1.0",
+
+  "main": "org.teavm.samples.benchmark.defrac.BenchmarkStarter",
+
   "targets": [
     "web",
     "jvm"
   ],
-  "debug": false,
+
+  "debug": "true",
   "strictMode": false,
+
   "web": {
     "main": "org.teavm.samples.benchmark.defrac.WebBenchmarkStarter",
-    "optimizer": {
-      "enabled": "true"
-    },
-    "port": 30679
-  }
+    "port": 30679,
+    "debug": "false",
+    "optimize": "true"
+  },
 }
