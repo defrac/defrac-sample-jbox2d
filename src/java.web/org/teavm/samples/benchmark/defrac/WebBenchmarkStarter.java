@@ -21,6 +21,7 @@ public final class WebBenchmarkStarter {
   private static Window window = Toplevel.window();
   private static HTMLDocument document = (HTMLDocument)window.document;
   private static HTMLCanvasElement canvas = (HTMLCanvasElement)document.getElementById("benchmark-canvas");
+  private static CanvasRenderingContext2D context = (CanvasRenderingContext2D)canvas.getContext("2d");
   private static HTMLElement resultTableBody = (HTMLElement)document.getElementById("result-table-body");
   private static Performance performance = (Performance)Bridge.getUnsafeObject(window, "performance");
   private static HTMLElement resultBest = (HTMLElement)document.getElementById("result-best");
@@ -37,6 +38,9 @@ public final class WebBenchmarkStarter {
 
   public static void main(String[] args) {
     startMillisecond = System.currentTimeMillis();
+    canvas.width = (int)(600.0f * window.devicePixelRatio + 0.5f);
+    canvas.height = (int)(600.0f * window.devicePixelRatio + 0.5f);
+    context.scale(window.devicePixelRatio, window.devicePixelRatio);
     makeStep();
   }
 
@@ -67,11 +71,8 @@ public final class WebBenchmarkStarter {
     }
     timeSpentCalculating += end - start;
     render();
-    window.setTimeout(new EventListener<Event>() {
-      @Override
-      public void onEvent(final Event event) {
-        makeStep();
-      }
+    window.setTimeout(event -> {
+      makeStep();
     }, scene.timeUntilNextStep());
   }
 
@@ -80,41 +81,41 @@ public final class WebBenchmarkStarter {
   }
 
   private static void render() {
-    CanvasRenderingContext2D context = (CanvasRenderingContext2D)canvas.getContext("2d");
-    context.strokeStyleAsString = "grey";
-    context.clearRect(0, 0, 600, 600);
-    context.save();
-    context.translate(0, 600);
-    context.scale(1, -1);
-    context.scale(100, 100);
-    context.lineWidth = 0.01;
+    CanvasRenderingContext2D ctx = context;
+    ctx.strokeStyleAsString = "grey";
+    ctx.clearRect(0, 0, 600, 600);
+    ctx.save();
+    ctx.translate(0, 600);
+    ctx.scale(1, -1);
+    ctx.scale(100, 100);
+    ctx.lineWidth = 0.01;
     for (Body body = scene.getWorld().getBodyList(); body != null; body = body.getNext()) {
       Vec2 center = body.getPosition();
-      context.save();
-      context.translate(center.x, center.y);
-      context.rotate(body.getAngle());
+      ctx.save();
+      ctx.translate(center.x, center.y);
+      ctx.rotate(body.getAngle());
       for (Fixture fixture = body.getFixtureList(); fixture != null; fixture = fixture.getNext()) {
         Shape shape = fixture.getShape();
         if (shape.getType() == ShapeType.CIRCLE) {
           CircleShape circle = (CircleShape)shape;
-          context.beginPath();
-          context.arc(circle.m_p.x, circle.m_p.y, circle.getRadius(), 0, java.lang.Math.PI * 2, true);
-          context.closePath();
-          context.stroke();
+          ctx.beginPath();
+          ctx.arc(circle.m_p.x, circle.m_p.y, circle.getRadius(), 0, java.lang.Math.PI * 2);
+          ctx.closePath();
+          ctx.stroke();
         } else if (shape.getType() == ShapeType.POLYGON) {
           PolygonShape poly = (PolygonShape)shape;
           Vec2[] vertices = poly.getVertices();
-          context.beginPath();
-          context.moveTo(vertices[0].x, vertices[0].y);
+          ctx.beginPath();
+          ctx.moveTo(vertices[0].x, vertices[0].y);
           for (int i = 1; i < poly.getVertexCount(); ++i) {
-            context.lineTo(vertices[i].x, vertices[i].y);
+            ctx.lineTo(vertices[i].x, vertices[i].y);
           }
-          context.closePath();
-          context.stroke();
+          ctx.closePath();
+          ctx.stroke();
         }
       }
-      context.restore();
+      ctx.restore();
     }
-    context.restore();
+    ctx.restore();
   }
 }

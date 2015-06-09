@@ -1,10 +1,11 @@
 package org.teavm.samples.benchmark.defrac;
 
 import com.defrac.benchmark.BenchmarkResults;
-import defrac.app.Bootstrap;
-import defrac.app.GenericApp;
 import defrac.display.Canvas;
+import defrac.display.Stage;
 import defrac.display.graphics.Graphics;
+import defrac.ui.DisplayList;
+import defrac.ui.Screen;
 import defrac.util.Color;
 import defrac.util.Timer;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -16,38 +17,40 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 import org.teavm.samples.benchmark.Scene;
 
+import javax.annotation.Nonnull;
+
 /**
  *
  */
-public final class BenchmarkStarter extends GenericApp {
+public final class BenchmarkScreen extends Screen {
   private static Scene scene = new Scene();
   private static int currentSecond;
   private static long startMillisecond;
   private static double timeSpentCalculating;
   private static BenchmarkResults results = new BenchmarkResults();
 
+  private DisplayList displayList;
   private Canvas canvas;
   private Graphics graphics;
 
-  private BenchmarkStarter() {
-  }
-
-  public static void main(String[] args) {
-    Bootstrap.run(new BenchmarkStarter());
-  }
-
   @Override
-  protected void onStart() {
-    graphics = addChild(canvas = new Canvas(600, 600)).graphics();
+  protected void onCreate() {
+    super.onCreate();
+
+    displayList = new DisplayList();
+    displayList.onStageReady(this::initStage);
+    rootView(displayList);
+  }
+
+  private void initStage(@Nonnull final Stage stage) {
+    canvas = new Canvas(600, 600);
+    graphics = canvas.graphics();
     canvas.centerRegistrationPoint();
-    onResize(width(), height());
+    stage.addChild(canvas);
+    canvas.moveTo(stage.width() * 0.5f, stage.height() * 0.5f);
     startMillisecond = System.currentTimeMillis();
     makeStep();
-  }
-
-  @Override
-  protected void onResize(final float width, final float height) {
-    canvas.moveTo(width * 0.5f, height * 0.5f);
+    stage.globalEvents().onResize.add(event -> canvas.moveTo(event.width * 0.5f, event.height * 0.5f));
   }
 
   private void makeStep() {
@@ -80,7 +83,7 @@ public final class BenchmarkStarter extends GenericApp {
 
   private void render() {
     graphics.
-        strokeStyle(Color.GRAY).
+        strokeStyle(Color.Web.GRAY).
         clearRect(0, 0, 600, 600).
         save().
         translate(0, 600).

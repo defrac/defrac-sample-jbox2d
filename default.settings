@@ -15,8 +15,8 @@
 
   "web": {
     "main": "org.teavm.samples.benchmark.defrac.WebBenchmarkStarter",
-    "port": 30679,
+    "port": 8080,
     "debug": "false",
     "optimize": "true"
-  },
+  }
 }
