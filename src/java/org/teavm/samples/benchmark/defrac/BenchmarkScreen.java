@@ -4,8 +4,8 @@ import com.defrac.benchmark.BenchmarkResults;
 import defrac.display.Canvas;
 import defrac.display.Stage;
 import defrac.display.graphics.Graphics;
+import defrac.ui.ContentScreen;
 import defrac.ui.DisplayList;
-import defrac.ui.Screen;
 import defrac.util.Color;
 import defrac.util.Timer;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 /**
  *
  */
-public final class BenchmarkScreen extends Screen {
+public final class BenchmarkScreen extends ContentScreen {
   private static Scene scene = new Scene();
   private static int currentSecond;
   private static long startMillisecond;
@@ -69,7 +69,7 @@ public final class BenchmarkScreen extends Screen {
     }
 
     timeSpentCalculating += end - start;
-    render();
+    renderScreen();
 
     new Timer(scene.timeUntilNextStep(), 1).listener(
         new Timer.SimpleListener() {
@@ -81,7 +81,7 @@ public final class BenchmarkScreen extends Screen {
     ).start();
   }
 
-  private void render() {
+  private void renderScreen() {
     graphics.
         strokeStyle(Color.Web.GRAY).
         clearRect(0, 0, 600, 600).
